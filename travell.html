@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Explorer - Home</title>
+
+<!-- SEO Meta -->
+<meta name="description" content="Travel Explorer - Discover amazing travel destinations and book flights, hotels, buses, and trains online. Explore the world with us!">
+<meta name="keywords" content="travel, flights, hotels, buses, trains, vacation, explore destinations">
+<meta name="robots" content="index, follow">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#fff;color:#333;}
+.top-nav{display:flex;justify-content:space-between;align-items:center;padding:18px 8%;background:#0a2540;color:white;}
+.logo{font-size:28px;font-weight:600;}
+.top-nav ul{display:flex;list-style:none;}
+.top-nav ul li{margin-left:25px;}
+.top-nav ul li a{color:white;text-decoration:none;font-size:16px;transition:0.3s;}
+.top-nav ul li a:hover{color:#ff7b00;}
+.nav-btn{background:#ff7b00;padding:8px 18px;border-radius:20px;}
+.travel-nav{display:flex;justify-content:center;gap:40px;padding:15px;background:white;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.tab{font-size:18px;padding:10px 20px;border-radius:25px;text-decoration:none;color:#333;transition:0.3s;}
+.tab:hover{background:#ff7b00;color:white;}
+.tab.active{background:#ff7b00;color:white;}
+.hero{height:85vh;background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e") center/cover no-repeat;display:flex;justify-content:center;align-items:center;text-align:center;color:white;}
+.hero h1{font-size:60px;margin-bottom:10px;}
+.hero p{font-size:20px;margin-bottom:20px;}
+.hero button{padding:12px 25px;border:none;background:#ff7b00;color:white;font-size:18px;border-radius:25px;cursor:pointer;transition:0.3s;}
+.hero button:hover{background:#ff9500;}
+.destinations{padding:70px 8%;text-align:center;}
+.destinations h2{font-size:36px;margin-bottom:40px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;}
+.card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.1);transition:0.4s;}
+.card img{width:100%;height:200px;object-fit:cover;}
+.card h3{padding:15px;}
+.card:hover{transform:translateY(-10px);}
+.about{background:#f5f5f5;padding:70px 10%;text-align:center;}
+.about h2{font-size:34px;margin-bottom:20px;}
+.about p{max-width:700px;margin:auto;line-height:1.6;}
+footer{background:#0a2540;color:white;text-align:center;padding:25px;margin-top:40px;}
+@media(max-width:768px){.top-nav{flex-direction:column;gap:10px;}.top-nav ul{flex-wrap:wrap;justify-content:center;}.travel-nav{flex-wrap:wrap;gap:15px;}.hero h1{font-size:38px;}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="top-nav">
+<div class="logo">Travel Explorer</div>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Destinations</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#" class="nav-btn">Contact</a></li>
+</ul>
+</div>
+
+<div class="travel-nav">
+<a href="booking.html" class="tab active">✈ Book a Flight</a>
+<a href="#" class="tab">🏨 Hotels</a>
+<a href="#" class="tab">🚌 Bus</a>
+<a href="#" class="tab">🚆 Train</a>
+</div>
+</header>
+
+<section class="hero">
+<div>
+<h1>Explore The World</h1>
+<p>Discover amazing places with us</p>
+<button onclick="window.location.href='booking.html'">Book Now</button>
+</div>
+</section>
+
+<section class="destinations">
+<h2>Popular Destinations</h2>
+<div class="cards">
+<div class="card"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34"><h3>Paris</h3></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1518684079-3c830dcef090"><h3>Maldives</h3></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"><h3>Switzerland</h3></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21"><h3>Goa</h3></div>
+</div>
+</section>
+
+<section class="about">
+<h2>About Us</h2>
+<p>We help travelers explore the most beautiful destinations around the world. Book your dream vacation with our amazing travel deals and packages.</p>
+</section>
+
+<footer>
+<p>© 2026 Travel Explorer | All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
