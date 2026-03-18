@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Booking</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== GLOBAL ===== */
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body {
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+    url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05") center/cover no-repeat;
+  color:white;
+}
+
+/* ===== TOP NAVBAR ===== */
+.top-nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:#0a2540;
+color:white;
+position:fixed;
+width:100%;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:600;
+}
+
+.top-nav ul{
+display:flex;
+list-style:none;
+}
+
+.top-nav ul li{
+margin-left:25px;
+}
+
+.top-nav ul li a{
+color:white;
+text-decoration:none;
+font-size:16px;
+transition:0.3s;
+}
+
+.top-nav ul li a:hover{
+color:#ff7b00;
+}
+
+.nav-btn{
+background:#ff7b00;
+padding:8px 18px;
+border-radius:20px;
+}
+
+/* ===== SECOND NAVBAR ===== */
+.travel-nav{
+display:flex;
+justify-content:center;
+gap:40px;
+padding:15px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(12px);
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+position:fixed;
+top:65px; /* below top-nav */
+width:100%;
+z-index:999;
+}
+
+.tab{
+font-size:18px;
+padding:10px 20px;
+border-radius:25px;
+text-decoration:none;
+color:white;
+transition:0.3s;
+}
+
+.tab:hover{
+background:#ff7b00;
+color:white;
+}
+
+.tab.active{
+background:#ff7b00;
+color:white;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  width:1000px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  padding:40px;
+  border-radius:25px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.7);
+  animation:fadeIn 0.8s ease;
+  margin:180px auto 50px; /* spacing for fixed navbar */
+}
+
+/* ===== HEADING ===== */
+h2 {
+  text-align:center;
+  font-size:34px;
+  margin-bottom:30px;
+  letter-spacing:1px;
+}
+
+/* ===== FORM GRID ===== */
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+  margin-bottom:20px;
+}
+
+input, select {
+  padding:15px 20px;
+  border:none;
+  border-radius:12px;
+  background:black;
+  color:white;
+  font-size:16px;
+  outline:none;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color:white;
+  font-weight:400;
+}
+select option {
+  background:black;
+  color:white;
+}
+
+input:focus, select:focus {
+  background:rgba(255,255,255,0.25);
+  box-shadow:0 0 15px #ff7b00;
+  transform:scale(1.03);
+}
+
+input.error {
+  border: 2px solid #ff4c4c;
+  background: rgba(255,76,76,0.15);
+}
+
+/* SEARCH BUTTON */
+.search-btn {
+  grid-column:span 2;
+  padding:16px;
+  font-size:18px;
+  font-weight:500;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ff7b00,#ff9500);
+  color:white;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+
+.search-btn:hover {
+  transform:scale(1.05);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* FLIGHT CARD */
+.flight {
+  background:white;
+  color:#333;
+  padding:18px;
+  border-radius:15px;
+  margin-top:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  transition:0.3s;
+}
+
+.flight:hover {
+  transform:translateY(-5px);
+}
+
+.price {
+  font-size:20px;
+  font-weight:600;
+  color:#ff7b00;
+}
+
+/* SELECT SEAT BUTTON */
+.seat-btn {
+  padding:10px 18px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(45deg,#0a2540,#1f4e79);
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+
+.seat-btn:hover {
+  background:linear-gradient(45deg,#ff7b00,#ff9500);
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.seat-btn:active {
+  transform:scale(0.95);
+}
+
+/* SEATS */
+#seatSection {
+  display:none;
+  margin-top:25px;
+}
+
+.seat-map {
+  display:grid;
+  grid-template-columns:repeat(6,50px);
+  gap:10px;
+  justify-content:center;
+  margin-top:15px;
+}
+
+.seat {
+  width:50px;
+  height:50px;
+  background:#ddd;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-weight:500;
+  transition:0.2s;
+}
+
+.seat:hover {
+  transform:scale(1.1);
+}
+
+.seat.selected {
+  background:#ff7b00;
+  color:white;
+  box-shadow:0 0 10px #ff7b00;
+}
+
+.seat.occupied {
+  background:#444;
+  color:white;
+  cursor:not-allowed;
+}
+
+/* CONFIRM BUTTON */
+.confirm-btn {
+  margin-top:15px;
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:#0a2540;
+  color:white;
+  font-weight:500;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.confirm-btn:hover {
+  background:#ff7b00;
+  transform:scale(1.05);
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .form-grid{grid-template-columns:1fr;}
+  .search-btn{grid-column:span 1;}
+  .flight{flex-direction:column;gap:10px;}
+  .travel-nav{
+    flex-wrap:wrap;
+    gap:15px;
+    top:100px;
+  }
+  .container{margin:200px 10px 50px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER NAVBAR ===== -->
+<header>
+<div class="top-nav">
+  <div class="logo">Travel Explorer</div>
+  <ul>
+    <li><a href="travell.html">Travel</a></li>
+    <li><a href="#">Destinations</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="nav-btn">Contact</a></li>
+  </ul>
+</div>
+
+<div class="travel-nav">
+  <a href="flights.html" class="tab active">✈ Flights</a>
+  <a href="hotels.html" class="tab">🏨 Hotels</a>
+  <a href="bus.html" class="tab">🚌 Bus</a>
+  <a href="train.html" class="tab">🚆 Train</a>
+</div>
+</header>
+
+<!-- ===== CONTAINER ===== -->
+<div class="container">
+
+<h2>✈ Flight Booking</h2>
+
+<div class="form-grid">
+<input id="from" placeholder="From">
+<input id="to" placeholder="To">
+<input type="date" id="departure">
+
+<select id="passengers">
+<option value="1">1 Passenger</option>
+<option value="2">2 Passengers</option>
+<option value="3">3 Passengers</option>
+<option value="4">4 Passengers</option>
+</select>
+
+<select id="class">
+<option value="1">Economy</option>
+<option value="1.5">Business</option>
+<option value="2">First</option>
+</select>
+
+<button class="search-btn" onclick="searchFlights()">Search Flights</button>
+</div>
+
+<div id="results"></div>
+
+<div id="seatSection">
+<h3>Select Seats</h3>
+<div id="seatMap" class="seat-map"></div>
+<button class="confirm-btn" onclick="redirectToCustomerForm()">Confirm Booking</button>
+</div>
+
+</div>
+
+<script>
+let selectedSeats=[];
+let passengerLimit=1;
+
+function calculatePrice(base,date,p,c){
+  let d=new Date(date);
+  if(d.getDay()==0||d.getDay()==6) base+=2000;
+  let diff=(d-new Date())/(1000*60*60*24);
+  if(diff<3) base+=1500;
+  return Math.round(base*p*c);
+}
+
+function searchFlights(){
+  let from=document.getElementById("from");
+  let to=document.getElementById("to");
+  let date=document.getElementById("departure").value;
+  let p=parseInt(document.getElementById("passengers").value);
+  let c=parseFloat(document.getElementById("class").value);
+  passengerLimit=p;
+
+  from.classList.remove("error");
+  to.classList.remove("error");
+
+  if(!from.value.trim() || !to.value.trim() || !date){
+    if(!from.value.trim()) from.classList.add("error");
+    if(!to.value.trim()) to.classList.add("error");
+    if(!date) alert("Please select a departure date.");
+    else alert("Please fill all required fields.");
+    return; 
+  }
+
+  let flights=[
+    {airline:"IndiGo",price:5000},
+    {airline:"Air India",price:6500},
+    {airline:"Vistara",price:7200},
+    {airline:"SpiceJet",price:5800},
+    {airline:"Akasa Air",price:6000},
+    {airline:"Go First",price:5400},
+    {airline:"AirAsia India",price:5600},
+    {airline:"Emirates",price:15000},
+    {airline:"Qatar Airways",price:17000},
+    {airline:"Singapore Airlines",price:20000}
+  ];
+
+  let res=document.getElementById("results");
+  res.innerHTML="";
+
+  flights.forEach(f=>{
+    let price=calculatePrice(f.price,date,p,c);
+    res.innerHTML+=`
+      <div class="flight">
+        <div>
+          <h3>${f.airline}</h3>
+          <p>${from.value} ➜ ${to.value}</p>
+        </div>
+        <div>
+          <div class="price">₹${price}</div>
+          <button class="seat-btn" onclick="showSeats()">💺 Select Seats</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function showSeats(){
+  selectedSeats=[];
+  document.getElementById("seatSection").style.display="block";
+  let map=document.getElementById("seatMap");
+  map.innerHTML="";
+  for(let i=1;i<=36;i++){
+    let seat=document.createElement("div");
+    seat.classList.add("seat");
+    seat.innerText=i;
+    if(Math.random()<0.2) seat.classList.add("occupied");
+    seat.onclick=function(){
+      if(seat.classList.contains("occupied")) return;
+      if(seat.classList.contains("selected")){
+        seat.classList.remove("selected");
+        selectedSeats=selectedSeats.filter(s=>s!=i);
+      }else{
+        if(selectedSeats.length>=passengerLimit){ alert("Seat limit reached"); return; }
+        seat.classList.add("selected");
+        selectedSeats.push(i);
+      }
+    };
+    map.appendChild(seat);
+  }
+}
+
+function redirectToCustomerForm(){
+  if(selectedSeats.length==0){alert("Select seats first"); return;}
+    window.location.href = "customer.html?seats=" + selectedSeats.join(",");
+}
+
+</script>
+
+</body>
+</html>

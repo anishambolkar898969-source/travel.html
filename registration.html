@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Website Registration</title>
+<style>
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Floating shapes */
+.floating-shapes span {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 12s linear infinite;
+}
+.floating-shapes span:nth-child(1) { left: 5%; animation-delay: 0s; }
+.floating-shapes span:nth-child(2) { left: 25%; animation-delay: 3s; }
+.floating-shapes span:nth-child(3) { left: 50%; animation-delay: 6s; }
+.floating-shapes span:nth-child(4) { left: 75%; animation-delay: 9s; }
+.floating-shapes span:nth-child(5) { left: 95%; animation-delay: 12s; }
+
+@keyframes float {
+    0% { transform: translateY(100vh) scale(1); opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+/* Registration Container */
+.registration-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+/* Registration Box */
+.registration-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 50px 40px; /* Reduced padding for smaller height */
+    border-radius: 25px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    width: 600px;
+    max-width: 95%;
+    text-align: center;
+    transform: translateY(-50px);
+    animation: slideFadeIn 1s forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for box */
+.registration-box:hover {
+    transform: translateY(-50px) scale(1.03);
+    box-shadow: 0 35px 90px rgba(0,0,0,0.6);
+}
+
+@keyframes slideFadeIn {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Title */
+.registration-box h2.title {
+    margin-bottom: 30px; /* Reduced margin */
+    color: #ff6b6b;
+    font-size: 32px;
+    animation: titleBounce 1s ease-in-out;
+}
+
+@keyframes titleBounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* Input Fields */
+.input-group {
+    margin-bottom: 16px; /* Reduced space between inputs */
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px; /* Reduced padding */
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.input-group input:hover {
+    border-color: #ff8e53;
+    box-shadow: 0 0 8px rgba(255, 140, 83, 0.5);
+}
+
+.input-group input:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
+    outline: none;
+}
+
+/* Submit Button */
+button.btn {
+    width: 100%;
+    padding: 16px; /* Reduced padding */
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 25px rgba(255,107,107,0.4);
+}
+
+button.btn:hover {
+    transform: scale(1.07) translateY(-2px);
+    box-shadow: 0 14px 35px rgba(255,107,107,0.7);
+}
+
+/* Messages */
+.msg {
+    margin-top: 10px;
+    font-size: 14px;
+    min-height: 18px;
+    transition: all 0.3s ease;
+}
+
+/* Login link */
+.login-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #ff6b6b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+    color: #ff8e53;
+}
+</style>
+</head>
+<body>
+<div class="registration-container">
+    <div class="floating-shapes">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="registration-box">
+        <h2 class="title">Register for Wanderlust Travel</h2>
+        <form id="registrationForm">
+            <div class="input-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter a password" required>
+            </div>
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+            <p class="msg" id="msg"></p>
+        </form>
+        <p class="login-link">Already have an account? <a href="#">Login</a></p>
+    </div>
+</div>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const fullname = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const confirmPassword = document.getElementById("confirm-password").value.trim();
+    const msg = document.getElementById("msg");
+
+    if(!fullname || !email || !password || !confirmPassword){
+        msg.style.color = "red";
+        msg.textContent = "Please fill in all fields!";
+        return;
+    }
+
+    if(password !== confirmPassword){
+        msg.style.color = "red";
+        msg.textContent = "Passwords do not match!";
+        return;
+    }
+
+    msg.style.color = "green";
+    msg.textContent = "Registration successful! Redirecting...";
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 1500);
+});
+</script>
+</body>
+</html>

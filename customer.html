@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Details - Flight Booking</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+              url("https://images.unsplash.com/photo-1504198453319-5ce911bafcde") center/cover no-repeat;
+  color:white;
+}
+
+.container{
+  width:550px;
+  background: rgba(255,255,255,0.1);
+  padding:35px 40px;
+  border-radius:25px;
+  backdrop-filter:blur(15px);
+  box-shadow:0 15px 50px rgba(0,0,0,0.7);
+  animation:fadeIn 0.8s ease;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:25px;
+  font-size:30px;
+}
+
+.seat-info, .flight-info{
+  background: rgba(255,255,255,0.2);
+  padding:12px;
+  border-radius:15px;
+  margin-bottom:15px;
+  text-align:center;
+}
+
+form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+input, select{
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:rgba(255,255,255,0.15);
+  color:white;
+  font-size:16px;
+}
+
+input::placeholder{
+  color:#ccc;
+}
+
+/* FIX DROPDOWN */
+select option{
+  color:black;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.confirm-btn, .back-btn{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.confirm-btn{
+  background:linear-gradient(45deg,#ff7b00,#ff9500);
+}
+
+.back-btn{
+  background:#0a2540;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Customer Details</h2>
+
+<div class="flight-info" id="flightInfo"></div>
+<div class="seat-info" id="selectedSeats"></div>
+
+<form id="customerForm">
+
+  <input type="text" id="name" placeholder="Full Name" required>
+  <input type="email" id="email" placeholder="Email" required>
+
+  <div class="form-row">
+    <input type="tel" id="phone" placeholder="Phone Number" required>
+    <input type="text" id="passport" placeholder="Passport Number">
+  </div>
+
+  <div class="form-row">
+    <input type="text" id="address" placeholder="Address">
+    <input type="text" id="city" placeholder="City">
+  </div>
+
+  <div class="form-row">
+    <input type="text" id="country" placeholder="Country">
+    <input type="text" id="zip" placeholder="ZIP Code">
+  </div>
+
+  <div class="form-row">
+    <input type="date" id="dob">
+    <select id="gender">
+      <option value="" disabled selected>Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <button type="submit" class="confirm-btn">Confirm Booking</button>
+</form>
+
+<button class="back-btn" onclick="goBack()">← Back to Home</button>
+
+</div>
+
+<script>
+// GET DATA FROM URL
+const urlParams = new URLSearchParams(window.location.search);
+const seats = urlParams.get('seats') || "None";
+const flight = urlParams.get('flight') || "Not selected";
+
+document.getElementById('selectedSeats').innerText = "Selected Seats: " + seats;
+document.getElementById('flightInfo').innerText = "Flight: " + flight;
+
+// FORM SUBMIT
+document.getElementById('customerForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+
+  if(!name || !email || !phone){
+    alert("Please fill required fields!");
+    return;
+  }
+
+  // PASSPORT CONFIRMATION POPUP
+  let confirmCheck = confirm("🛂 Are all details exactly as per your passport?");
+
+  if(confirmCheck){
+    // REDIRECT TO PAYMENT PAGE
+    window.location.href = "payment.html?name=" + encodeURIComponent(name) +
+                           "&seats=" + seats +
+                           "&flight=" + encodeURIComponent(flight);
+  }
+});
+
+// BACK BUTTON
+function goBack(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

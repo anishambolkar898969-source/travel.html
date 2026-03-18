@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payment - Flight Booking</title>
+
+<!-- Bootstrap 5 CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)
+      ),
+      url("https://images.unsplash.com/photo-1502920917128-1aa500764b8a")
+        center/cover no-repeat;
+    color: white;
+  }
+  .container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    max-width: 480px;
+  }
+  #upiQR img {
+    width: 180px;
+    height: 180px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center mb-4">💳 Payment</h2>
+
+    <!-- User Info -->
+    <div class="alert alert-info text-center" id="userName"></div>
+    <div class="alert alert-secondary text-center" id="flightInfo"></div>
+    <div class="alert alert-secondary text-center" id="seatInfo"></div>
+
+    <!-- Payment Methods -->
+    <div class="d-flex justify-content-around mb-3">
+      <button
+        class="btn btn-outline-warning"
+        id="cardBtn"
+        onclick="selectMethod('card')"
+      >
+        Card
+      </button>
+      <button
+        class="btn btn-outline-warning"
+        id="upiBtn"
+        onclick="selectMethod('upi')"
+      >
+        UPI
+      </button>
+    </div>
+
+    <form id="paymentForm" onsubmit="return false;">
+      <!-- Card Section -->
+      <div id="cardSection">
+        <div class="mb-2">
+          <input
+            type="text"
+            id="cardNumber"
+            class="form-control"
+            placeholder="Card Number"
+          />
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              type="text"
+              id="expiry"
+              class="form-control"
+              placeholder="MM/YY"
+            />
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              id="cvv"
+              class="form-control"
+              placeholder="CVV"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- UPI Section -->
+      <div id="upiSection" style="display: none;">
+        <input
+          type="text"
+          id="upi"
+          class="form-control mb-2"
+          placeholder="Enter UPI ID (example@upi)"
+        />
+      </div>
+
+      <button type="button" id="payNowBtn" class="btn btn-warning w-100 mt-3">
+        Pay Now
+      </button>
+    </form>
+
+    <!-- Static QR Code for UPI -->
+    <div
+      id="upiQR"
+      class="text-center mt-3"
+      style="display: none; user-select: none;"
+      title="Scan this QR code with your UPI app"
+    >
+      <p>Scan QR to pay via UPI:</p>
+      <img
+        src="qr.jpeg"
+        alt="UPI QR"
+        style="width: 180px; height: 180px;"
+      />
+    </div>
+  </div>
+
+  <script>
+    // Get URL data
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name") || "User";
+    const seats = params.get("seats") || "N/A";
+    const flight = params.get("flight") || "N/A";
+
+    document.getElementById("userName").innerText = "Name: " + name;
+    document.getElementById("flightInfo").innerText = "Flight: " + flight;
+    document.getElementById("seatInfo").innerText = "Seats: " + seats;
+
+    // Payment method toggle UI update
+    function selectMethod(method) {
+      document.getElementById("cardSection").style.display =
+        method === "card" ? "block" : "none";
+      document.getElementById("upiSection").style.display =
+        method === "upi" ? "block" : "none";
+      document.getElementById("upiQR").style.display = "none";
+
+      document.getElementById("cardBtn").classList.remove("btn-warning");
+      document.getElementById("upiBtn").classList.remove("btn-warning");
+
+      document
+        .getElementById("cardBtn")
+        .classList.add(method === "card" ? "btn-warning" : "btn-outline-warning");
+      document
+        .getElementById("upiBtn")
+        .classList.add(method === "upi" ? "btn-warning" : "btn-outline-warning");
+    }
+
+    // Default to Card payment
+    selectMethod("card");
+
+    // Payment logic
+    function payWithUPI() {
+      const upiID = document.getElementById("upi").value.trim();
+      if (!upiID) {
+        alert("Please enter your UPI ID!");
+        return;
+      }
+      const amount = 5000; // example amount in INR
+
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        // Mobile devices open UPI app with payment link
+        const upiLink = `upi://pay?pa=${encodeURIComponent(
+          upiID
+        )}&pn=FlightBooking&am=${amount}&cu=INR`;
+        window.location.href = upiLink;
+      } else {
+        // Desktop users see static QR code with alert
+        document.getElementById("upiQR").style.display = "block";
+        alert("Scan the QR code to pay via UPI from your mobile app.");
+      }
+    }
+
+    function payWithCard() {
+      const card = document.getElementById("cardNumber").value.trim();
+      const expiry = document.getElementById("expiry").value.trim();
+      const cvv = document.getElementById("cvv").value.trim();
+
+      if (!card || !expiry || !cvv) {
+        alert("Please fill in all card details.");
+        return;
+      }
+      alert("Redirecting to secure bank...");
+      setTimeout(() => {
+        alert("✅ Payment Successful!");
+        window.location.href = "index.html"; // Redirect to homepage or confirmation
+      }, 2000);
+    }
+
+    document.getElementById("payNowBtn").addEventListener("click", () => {
+      const isUPI = document.getElementById("upiSection").style.display === "block";
+      if (isUPI) {
+        payWithUPI();
+      } else {
+        payWithCard();
+      }
+    });
+  </script>
+</body>
+</html>
